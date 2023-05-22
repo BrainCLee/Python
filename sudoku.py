@@ -14,21 +14,20 @@ def initialize_board_4x4():
     row3 = row2[2:4] + row2[0:2]
     return [row0, row1, row2, row3]
 
-def gogo():
+def initialize_board_9x9():
     row = []
-    row0 = [i for i in range(1,10)]
     for i in range(0,9):
-        row.append(row0)
-    
+        row.append([i for i in range(1,10)])
     for i in range(1,9):
         for n in range(0,9):
-            #if(row[i][n] < 10):
-                row[i][n] = row[i][n] + 1
-            #row[i][n]
+            if(row[i][n] + row[i-1][0] < 10):
+                row[i][n] = row[i][n] + row[i-1][0]
             
-            #else:
-             #   row[i][n] = row[i][n] + 1 - 9
+            else:
+                row[i][n] = row[i][n] + row[i-1][0] - 9
+
     return row
+
 
 def shuffle_ribbons(board):
     top = board[:2]
@@ -54,5 +53,5 @@ def create_solution_board_4x4():
 
 #bb = initialize_board_4x4()
 #print(create_solution_board_4x4())
-print(gogo())
+print(shuffle_1(gogo()))
 #print(transpose(bb))
