@@ -1,7 +1,7 @@
 import random
 
 
-def Initialize_board_9x9():
+def Initialize_board():
     row = []
     for i in range(0,9):
         row.append([i for i in range(1,10)])
@@ -15,7 +15,7 @@ def Initialize_board_9x9():
 
     return row
 
-def Shuffle_ribbons_9x9(board):
+def Shuffle_ribbons(board):
     top = board[:3]
     mid = board[3:6]
     bottom = board[6:]
@@ -25,7 +25,7 @@ def Shuffle_ribbons_9x9(board):
     return top + mid + bottom
 
 
-def Transpose_9x9(board):
+def Transpose(board):
     transposed = []
     size = len(board)
     for _ in range(size):
@@ -37,33 +37,37 @@ def Transpose_9x9(board):
 
     return transposed
 
-def Create_solution_board_9x9():
-    board = Initialize_board_9x9()
-    board = Shuffle_ribbons_9x9(board)
-    board = Transpose_9x9(board)
-    board = Shuffle_ribbons_9x9(board)
-    board = Transpose_9x9(board)
+def Create_solution_board():
+    board = Initialize_board()
+    board = Shuffle_ribbons(board)
+    board = Transpose(board)
+    board = Shuffle_ribbons(board)
+    board = Transpose(board)
     return board
 
-def copy_board(board):
+def Copy_board(board):
     board_clone = []
     for row in board :
         board_clone.append(row[:])
     return board_clone
 
-def get_level():
+def Get_level():
     print("Enter Your Level.")
-    level = input("Beginner=1, Intermediate=2, Advanced=3: ")
-    while level not in ("1","2","3"):
-        level = input("Beginner=1, Intermediate=2, Advanced=3: ")
+    level = input("Beginner=1, Intermediate=2, Bachelor=3, Master=4, Doctor=5: ")
+    while level not in ("1","2","3","4","5"):
+        level = input("Beginner=1, Intermediate=2, Bachelor=3, Master=4, Doctor=5: ")
     if level == "1":
-        return 51
+        return 36
     elif level == "2":
+        return 43
+    elif level == "3":
+        return 51
+    elif level == "4":
         return 58
     else:
         return 64
 
-def make_holes(board, no_of_holes):
+def Make_holes(board, no_of_holes):
     while no_of_holes > 0:
         i = random.randint(0,8)
         j = random.randint(0,8)
@@ -72,8 +76,12 @@ def make_holes(board, no_of_holes):
             no_of_holes -= 1
     return board
 
-def show_board(board):
+def Show_board(board):
+    print("r/c 1 2 3 4 5 6 7 8 9", end = "\n\n")
+    nprintColumn = 0
     for row in board:
+        print(str(nprintColumn+1), end = "   ")
+        nprintColumn += 1
         for entry in row:
             if entry == 0:
                 print('.', end=' ')
@@ -81,31 +89,31 @@ def show_board(board):
                 print(entry, end=' ')
         print()
 
-def get_integer(message,i,j):
+def Get_integer(message,i,j):
     digit = input(message)
     while not (digit.isdigit() and i <= int(digit) <= j):
         digit = input(message)
     return int(digit)
 
-def sudoku_mini():
-    solution_board = Create_solution_board_9x9()
-    puzzle_board = copy_board(solution_board)
-    no_of_holes = get_level()
-    puzzle_board = make_holes(puzzle_board, no_of_holes)
-    show_board(puzzle_board)
+def Sudoku():
+    solution_board = Create_solution_board()
+    puzzle_board = Copy_board(solution_board)
+    no_of_holes = Get_level()
+    puzzle_board = Make_holes(puzzle_board, no_of_holes)
+    Show_board(puzzle_board)
     while no_of_holes > 0:
-        i = get_integer("Row#(1,2,3,4,5,6,7,8,9): ",1,9) - 1
-        j = get_integer("Column#(1,2,3,4,5,6,7,8,9): ",1,9) - 1
+        i = Get_integer("Row#(1 ~ 9): ",1,9) - 1
+        j = Get_integer("Column#(1 ~ 9): ",1,9) - 1
         if puzzle_board[i][j] != 0:
             print("Not empty!")
             continue
-        n = get_integer("Number(1,2,3,4,5,6,7,8,9): ",1,9)
+        n = Get_integer("Number(1 ~ 9): ",1,9)
         if n == solution_board[i][j]:
             puzzle_board[i][j] = solution_board[i][j]
-            show_board(puzzle_board)
+            Show_board(puzzle_board)
             no_of_holes -= 1
         else:
             print(n,": Wrong number! Try again.")
     print("Well done! Come again.")
 
-sudoku_mini()
+Sudoku()
