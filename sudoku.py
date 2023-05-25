@@ -7,11 +7,18 @@ def Initialize_board():
         row.append([i for i in range(1,10)])
     for i in range(1,9):
         for n in range(0,9):
-            if(row[i][n] + row[i-1][0] + 2 < 10):
-                row[i][n] = row[i][n] + row[i-1][0] + 2
+            if(i < 3):
+                if(row[i][n] + row[i-1][0] + 2 < 10):
+                    row[i][n] = row[i][n] + row[i-1][0] + 2
             
+                else:
+                    row[i][n] = row[i][n] + row[i-1][0] + 2 - 9
             else:
-                row[i][n] = row[i][n] + row[i-1][0] + 2 - 9
+                if(row[i-3][n] + 1 < 10):
+                    row[i][n] = row[i-3][n] + 1
+            
+                else:
+                    row[i][n] = row[i-3][n] + 1 - 9
 
     return row
 
